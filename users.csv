@@ -1,4 +1,13 @@
-username,role
-store,Store
-dept,Department
-admin,Admin
+username,role,department
+store,Store,
+admin,Admin,
+it_dept,Department,IT
+accounts_dept,Department,Accounts
+admin_dept,Department,Administration
+sports_dept,Department,Sports
+medical_dept,Department,Medical
+ops_dept,Department,Operations
+logistics_dept,Department,Logistics
+training_dept,Department,Training
+
+
