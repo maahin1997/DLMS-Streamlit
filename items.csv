@@ -1,11 +1,32 @@
-Item,Ledger,Folio,Type
-Printer,IT pmt,12,Permanent
-Desktop,IT pmt,13,Permanent
-Projector,IT pmt,14,Permanent
-Chair,Stationary,21,Permanent
-Table,Stationary,22,Permanent
-Football,Sports,31,Permanent
-Cricket Bat,Sports,32,Permanent
-Paper,Stationary,41,Consumable
-Ink Cartridge,IT consumable,42,Consumable
-Files,Stationary,43,Consumable
+Item,Ledger,Folio,Type,Stock
+Printer,IT pmt,12,Permanent,10
+Desktop Computer,IT pmt,13,Permanent,8
+Laptop,IT pmt,15,Permanent,6
+Projector,IT pmt,14,Permanent,5
+Network Switch,IT pmt,16,Permanent,7
+UPS,IT pmt,17,Permanent,9
+Office Chair,Stationery,21,Permanent,40
+Office Table,Stationery,22,Permanent,25
+Steel Almirah,Stationery,23,Permanent,12
+Filing Cabinet,Stationery,24,Permanent,15
+White Board,Stationery,25,Permanent,18
+Air Conditioner,Electrical pmt,26,Permanent,4
+Ceiling Fan,Electrical pmt,27,Permanent,20
+Water Dispenser,Amenity pmt,28,Permanent,10
+Fire Extinguisher,Safety pmt,29,Permanent,30
+Football,Sports,31,Permanent,20
+Cricket Bat,Sports,32,Permanent,15
+Volleyball,Sports,33,Permanent,18
+Badminton Racket,Sports,34,Permanent,25
+Treadmill,Sports pmt,35,Permanent,3
+A4 Paper,Stationery,41,Consumable,5000
+Ink Cartridge,IT Consumable,42,Consumable,300
+File Folder,Stationery,43,Consumable,1200
+Stapler,Stationery,44,Consumable,250
+Pen,Stationery,45,Consumable,2000
+Marker Pen,Stationery,46,Consumable,800
+Cleaning Liquid,Housekeeping,47,Consumable,600
+Hand Gloves,Medical Consumable,48,Consumable,1000
+Face Mask,Medical Consumable,49,Consumable,5000
+Printer Cable,IT Consumable,50,Consumable,150
+
