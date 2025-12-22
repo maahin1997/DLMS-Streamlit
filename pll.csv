@@ -1,13 +1,33 @@
 Department,Item,Qty
 IT,Printer,2
-IT,Desktop,1
+IT,Desktop Computer,1
+Training,Laptop,2
 Training,Projector,1
-Administration,Chair,10
-Accounts,Table,5
-Sports,Football,6
-Sports,Cricket Bat,4
-Operations,Printer,1
-Engineering,Desktop,2
+Operations,Network Switch,2
+Accounts,UPS,1
+Administration,Office Chair,10
+Accounts,Office Table,5
+Administration,Steel Almirah,2
+Administration,Filing Cabinet,3
+Training,White Board,4
+Medical,Air Conditioner,1
+Operations,Ceiling Fan,6
+Administration,Water Dispenser,2
+Security,Fire Extinguisher,5
+Sports,Football,8
+Sports,Cricket Bat,6
+Sports,Volleyball,5
+Sports,Badminton Racket,10
+Sports,Treadmill,1
+Engineering,Printer,1
+Engineering,Desktop Computer,2
+Engineering,Laptop,1
 Medical,Projector,1
+IT,Network Switch,2
+Operations,UPS,1
+Training,Office Chair,6
+Logistics,Office Table,4
+Logistics,Steel Almirah,1
+Logistics,White Board,3
 
 
