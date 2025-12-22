@@ -27,7 +27,7 @@ def save(df, file):
 
 # ================= LOAD DATA =================
 users = load(FILES["users"], ["username","role","department"])
-items = load(FILES["items"], ["Item","Ledger","Folio","Type"])
+items = load(FILES["items"], ["Item","Ledger","Folio","Type","Stock"])
 depts = load(FILES["depts"], ["Department"])
 s156 = load(FILES["s156"], ["Item","Department","Qty","Status"])
 ledger = load(FILES["ledger"], ["Item","Ledger","Folio","Department","Qty"])
@@ -42,13 +42,16 @@ st.sidebar.title("Login")
 username = st.sidebar.text_input("Username")
 
 if username not in users["username"].values:
-    st.warning("Valid users: store / dept / admin")
+    st.warning("Enter valid username")
     st.stop()
 
-role = users.loc[users["username"]==username,"role"].values[0]
-user_dept = users.loc[users["username"]==username,"department"].values[0]
+role = users.loc[users["username"] == username, "role"].values[0]
+user_dept = users.loc[users["username"] == username, "department"].values[0]
 
 st.sidebar.success(f"Role: {role}")
+if role == "Department":
+    st.sidebar.info(f"Department: {user_dept}")
+
 st.title("Digital Ledger Management System (DLMS)")
 st.caption("MSc IT – Working Prototype")
 
@@ -57,219 +60,183 @@ menu = st.sidebar.selectbox(
     "Menu",
     [
         "Dashboard",
-        "Item Master","Department Master","S-156 Issue",
-        "Approvals","Ledger","PLL","Consumable Summary",
-        "Return Item","Survey","Write-Off"
+        "Available Stock",
+        "Pending Actions",
+        "Store Approvals",
+        "Item Master",
+        "Department Master",
+        "Ledger",
+        "PLL",
+        "Consumable Summary",
+        "Return Item",
+        "Survey",
+        "Write-Off"
     ]
 )
 
 # ================= DASHBOARD =================
-if menu=="Dashboard":
+if menu == "Dashboard":
 
-    if role=="Store":
+    if role == "Store":
         st.header("Store Dashboard")
         c1,c2,c3 = st.columns(3)
-        c1.metric("Total Items",len(items))
-        c2.metric("Permanent Items",len(items[items["Type"]=="Permanent"]))
-        c3.metric("Consumable Items",len(items[items["Type"]=="Consumable"]))
+        c1.metric("Total Items", len(items))
+        c2.metric("Available Stock", int(items["Stock"].sum()))
+        c3.metric("Ledger Entries", len(ledger))
 
         c4,c5,c6 = st.columns(3)
-        c4.metric("Total S-156",len(s156))
-        c5.metric("Pending S-156",len(s156[s156["Status"]=="Pending"]))
-        c6.metric("Ledger Entries",len(ledger))
+        c4.metric("Pending Requests", len(s156[s156["Status"]=="Requested"]))
+        c5.metric("Pending Returns", len(returns[returns["Status"]=="Pending"]))
+        c6.metric("Pending Surveys", len(survey[survey["Status"]=="Pending"]))
 
-        c7,c8 = st.columns(2)
-        c7.metric("Pending Returns",len(returns[returns["Status"]=="Pending"]))
-        c8.metric("Pending Surveys",len(survey[survey["Status"]=="Pending"]))
-
-    elif role=="Department":
+    elif role == "Department":
         st.header("Department Dashboard")
 
-        dept_pll = pll[pll["Department"]==user_dept]
-        dept_s156 = s156[s156["Department"]==user_dept]
-        dept_returns = returns[returns["Department"]==user_dept]
-        dept_survey = survey[survey["Department"]==user_dept]
+        dept_pll = pll[pll["Department"] == user_dept]
+        dept_s156 = s156[s156["Department"] == user_dept]
+        dept_returns = returns[returns["Department"] == user_dept]
+        dept_survey = survey[survey["Department"] == user_dept]
 
         c1,c2,c3 = st.columns(3)
-        c1.metric("Items on PLL",dept_pll["Qty"].sum())
-        c2.metric("Pending S-156",len(dept_s156[dept_s156["Status"]=="Pending"]))
-        c3.metric("Approved Issues",len(dept_s156[dept_s156["Status"]=="Approved"]))
+        c1.metric("Items on PLL", int(dept_pll["Qty"].sum()))
+        c2.metric("Pending Requests", len(dept_s156[dept_s156["Status"]!="Received"]))
+        c3.metric("Pending Returns", len(dept_returns[dept_returns["Status"]=="Pending"]))
 
-        c4,c5 = st.columns(2)
-        c4.metric("Pending Returns",len(dept_returns[dept_returns["Status"]=="Pending"]))
-        c5.metric("Surveyed Items",len(dept_survey[dept_survey["Status"]=="Approved"]))
-
-        st.subheader("Your Permanent Loan Ledger")
+        st.subheader("Your PLL")
         st.dataframe(dept_pll)
 
-    elif role=="Admin":
+    elif role == "Admin":
         st.header("Admin Dashboard")
         c1,c2,c3 = st.columns(3)
-        c1.metric("Departments",depts["Department"].nunique())
-        c2.metric("Dept Approved S-156",len(s156[s156["Status"]=="Dept Approved"]))
-        c3.metric("Final Approved",len(s156[s156["Status"]=="Approved"]))
-
-        c4,c5,c6 = st.columns(3)
-        c4.metric("Survey Cases",len(survey))
-        c5.metric("Write-Offs",len(writeoff))
-        c6.metric("Ledger Entries",len(ledger))
+        c1.metric("Departments", depts["Department"].nunique())
+        c2.metric("Pending Surveys", len(survey[survey["Status"]=="Pending"]))
+        c3.metric("Write-Offs", len(writeoff))
 
         st.subheader("PLL Snapshot")
         st.dataframe(pll.groupby("Department")["Qty"].sum().reset_index())
 
-# ================= ITEM MASTER =================
-elif menu=="Item Master" and role=="Store":
-    st.header("Item Master")
-    item = st.text_input("Item Name")
-    ledger_name = st.text_input("Ledger Name")
-    folio = st.text_input("Folio No")
-    itype = st.selectbox("Type",["Permanent","Consumable"])
+# ================= AVAILABLE STOCK =================
+elif menu == "Available Stock" and role == "Department":
+    st.header("Available Stock (Store)")
 
-    if st.button("Add Item"):
-        items.loc[len(items)] = [item,ledger_name,folio,itype]
-        save(items,FILES["items"])
-        st.success("Item Added")
-        st.experimental_rerun()
+    available = items[(items["Type"]=="Permanent") & (items["Stock"]>0)]
+    st.dataframe(available)
 
-    st.dataframe(items)
+    item = st.selectbox("Item", available["Item"])
+    max_qty = int(available[available["Item"]==item]["Stock"].values[0])
+    qty = st.number_input("Quantity", 1, max_qty)
 
-# ================= DEPARTMENT MASTER =================
-elif menu=="Department Master" and role=="Store":
-    st.header("Department Master")
-    dept = st.text_input("Department Name")
+    if st.button("Raise S-156 Request"):
+        s156.loc[len(s156)] = [item, user_dept, qty, "Requested"]
+        save(s156, FILES["s156"])
+        st.success("S-156 Request Submitted")
 
-    if st.button("Add Department"):
-        depts.loc[len(depts)] = [dept]
-        pll.loc[len(pll)] = [dept,"",0]
-        save(depts,FILES["depts"])
-        save(pll,FILES["pll"])
-        st.success("Department & PLL Created")
-        st.experimental_rerun()
+# ================= STORE APPROVALS =================
+elif menu == "Store Approvals" and role == "Store":
+    st.header("Store Approvals")
 
-    st.dataframe(depts)
-
-# ================= S-156 ISSUE =================
-elif menu=="S-156 Issue" and role=="Store":
-    st.header("S-156 Issue")
-    item = st.selectbox("Item",items[items["Type"]=="Permanent"]["Item"])
-    dept = st.selectbox("Department",depts["Department"])
-    qty = st.number_input("Quantity",1)
-
-    if st.button("Raise S-156"):
-        s156.loc[len(s156)] = [item,dept,qty,"Pending"]
-        save(s156,FILES["s156"])
-        st.success("S-156 Raised")
-
-    st.dataframe(s156)
-
-# ================= APPROVALS =================
-elif menu=="Approvals":
-    st.header("Approvals")
-
-    if role=="Department":
-        data = s156[s156["Department"]==user_dept]
-    else:
-        data = s156
-
-    for i,row in data.iterrows():
+    pending = s156[s156["Status"]=="Requested"]
+    for i,row in pending.iterrows():
         st.write(row.to_dict())
+        if st.button(f"Approve {i}", key=f"ap{i}"):
+            s156.at[i,"Status"] = "Store Approved"
+            items.loc[items["Item"]==row["Item"],"Stock"] -= row["Qty"]
+            save(items, FILES["items"])
+            save(s156, FILES["s156"])
+            st.experimental_rerun()
 
-        if role=="Department" and row["Status"]=="Pending":
-            if st.button(f"Dept Approve {i}",key=f"d{i}"):
-                s156.at[i,"Status"]="Dept Approved"
-                save(s156,FILES["s156"])
-                st.experimental_rerun()
+# ================= PENDING ACTIONS =================
+elif menu == "Pending Actions":
+    st.header("Pending Actions")
 
-        if role=="Admin" and row["Status"]=="Dept Approved":
-            if st.button(f"Admin Approve {i}",key=f"a{i}"):
-                s156.at[i,"Status"]="Approved"
-                item_row = items[items["Item"]==row["Item"]].iloc[0]
+    if role == "Department":
+        st.dataframe(s156[(s156["Department"]==user_dept) & (s156["Status"]!="Received")])
 
-                ledger.loc[len(ledger)] = [
-                    row["Item"],item_row["Ledger"],
-                    item_row["Folio"],row["Department"],row["Qty"]
-                ]
+    elif role == "Store":
+        st.dataframe(s156[s156["Status"]=="Requested"])
 
-                pll.loc[len(pll)] = [row["Department"],row["Item"],row["Qty"]]
-
-                save(s156,FILES["s156"])
-                save(ledger,FILES["ledger"])
-                save(pll,FILES["pll"])
-                st.success("Ledger & PLL Updated")
-                st.experimental_rerun()
+    elif role == "Admin":
+        st.dataframe(survey[survey["Status"]=="Pending"])
 
 # ================= LEDGER =================
-elif menu=="Ledger":
+elif menu == "Ledger":
     st.header("Ledger")
-    st.dataframe(ledger)
+    if role == "Department":
+        st.dataframe(ledger[ledger["Department"]==user_dept])
+    else:
+        st.dataframe(ledger)
 
 # ================= PLL =================
-elif menu=="PLL":
+elif menu == "PLL":
     st.header("Permanent Loan Ledger")
-    st.dataframe(pll)
+    if role == "Department":
+        st.dataframe(pll[pll["Department"]==user_dept])
+    else:
+        st.dataframe(pll)
 
 # ================= CONSUMABLE SUMMARY =================
-elif menu=="Consumable Summary" and role=="Store":
+elif menu == "Consumable Summary":
     st.header("Consumable Summary")
-    item = st.selectbox("Consumable Item",items[items["Type"]=="Consumable"]["Item"])
-    dept = st.selectbox("Department",depts["Department"])
-    qty = st.number_input("Quantity",1)
+    if role == "Store":
+        st.dataframe(summary)
+    elif role == "Department":
+        st.dataframe(summary[summary["Department"]==user_dept])
 
-    if st.button("Add Summary"):
-        summary.loc[len(summary)] = [item,dept,qty]
-        save(summary,FILES["summary"])
-        st.success("Summary Updated")
-
-    st.dataframe(summary)
-
-# ================= RETURN =================
-elif menu=="Return Item" and role=="Department":
+# ================= RETURN ITEM =================
+elif menu == "Return Item" and role == "Department":
     st.header("Return Item")
+
     dept_pll = pll[pll["Department"]==user_dept]
-    item = st.selectbox("Item",dept_pll["Item"])
+    st.dataframe(dept_pll)
+
+    item = st.selectbox("Item", dept_pll["Item"])
     max_qty = int(dept_pll[dept_pll["Item"]==item]["Qty"].values[0])
-    qty = st.number_input("Qty",1,max_qty)
+    qty = st.number_input("Return Qty",1,max_qty)
 
     if st.button("Submit Return"):
         returns.loc[len(returns)] = [user_dept,item,qty,"Pending"]
-        save(returns,FILES["returns"])
+        save(returns, FILES["returns"])
         st.success("Return Requested")
 
 # ================= SURVEY =================
-elif menu=="Survey" and role=="Store":
+elif menu == "Survey":
     st.header("Survey")
-    item = st.selectbox("Item",items["Item"])
-    dept = st.selectbox("Department",depts["Department"])
-    qty = st.number_input("Qty",1)
-    ref = st.text_input("Survey Ref")
 
-    if st.button("Initiate Survey"):
-        survey.loc[len(survey)] = [item,dept,qty,ref,"Pending"]
-        save(survey,FILES["survey"])
-        st.success("Survey Initiated")
+    if role == "Store":
+        item = st.selectbox("Item", items["Item"])
+        dept = st.selectbox("Department", depts["Department"])
+        qty = st.number_input("Qty",1)
+        ref = st.text_input("Survey Ref")
+
+        if st.button("Initiate Survey"):
+            survey.loc[len(survey)] = [item,dept,qty,ref,"Pending"]
+            save(survey, FILES["survey"])
+            st.success("Survey Initiated")
+
+    elif role == "Department":
+        st.dataframe(survey[survey["Department"]==user_dept])
 
 # ================= WRITE-OFF =================
-elif menu=="Write-Off" and role=="Admin":
+elif menu == "Write-Off":
     st.header("Write-Off")
 
-    for i,row in survey[survey["Status"]=="Pending"].iterrows():
-        st.write(row.to_dict())
-        if st.button(f"Approve Write-Off {i}",key=f"w{i}"):
-            survey.at[i,"Status"]="Approved"
-            writeoff.loc[len(writeoff)] = [
-                row["Item"],row["Department"],
-                row["Qty"],row["SurveyRef"],"Approved"
-            ]
-            pll.loc[
-                (pll["Department"]==row["Department"]) &
-                (pll["Item"]==row["Item"]),
-                "Qty"
-            ] -= row["Qty"]
+    if role == "Admin":
+        for i,row in survey[survey["Status"]=="Pending"].iterrows():
+            st.write(row.to_dict())
+            if st.button(f"Approve {i}", key=f"wo{i}"):
+                survey.at[i,"Status"]="Approved"
+                writeoff.loc[len(writeoff)] = [
+                    row["Item"],row["Department"],row["Qty"],row["SurveyRef"],"Approved"
+                ]
+                pll.loc[
+                    (pll["Department"]==row["Department"]) &
+                    (pll["Item"]==row["Item"]),
+                    "Qty"
+                ] -= row["Qty"]
 
-            save(survey,FILES["survey"])
-            save(writeoff,FILES["writeoff"])
-            save(pll,FILES["pll"])
-            st.success("Item Written Off")
-            st.experimental_rerun()
-
-
+                save(survey, FILES["survey"])
+                save(writeoff, FILES["writeoff"])
+                save(pll, FILES["pll"])
+                st.experimental_rerun()
+    else:
+        st.warning("Admin access only")
