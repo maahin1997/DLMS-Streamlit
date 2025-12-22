@@ -1,1 +1,11 @@
 Item,Department,Qty,Status
+Printer,IT,2,Pending
+Desktop,IT,1,Dept Approved
+Projector,Training,1,Approved
+Chair,Administration,10,Pending
+Table,Accounts,5,Dept Approved
+Football,Sports,6,Approved
+Cricket Bat,Sports,4,Pending
+Printer,Operations,1,Approved
+Desktop,Engineering,2,Dept Approved
+Projector,Medical,1,Pending
