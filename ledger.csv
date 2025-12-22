@@ -1,1 +1,11 @@
-Item,Department,Qty
+Item,Ledger,Folio,Department,Qty
+Projector,IT pmt,14,Training,1
+Football,Sports,31,Sports,6
+Printer,IT pmt,12,Operations,1
+Desktop,IT pmt,13,Engineering,2
+Chair,Stationary,21,Administration,10
+Table,Stationary,22,Accounts,5
+Cricket Bat,Sports,32,Sports,4
+Desktop,IT pmt,13,IT,1
+Printer,IT pmt,12,IT,2
+Projector,IT pmt,14,Medical,1
