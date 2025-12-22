@@ -1,4 +1,11 @@
 Item,Ledger,Folio,Type
-Chair,Stationary,1,Permanent
-Pen,Stationary,2,Consumable
-
+Printer,IT pmt,12,Permanent
+Desktop,IT pmt,13,Permanent
+Projector,IT pmt,14,Permanent
+Chair,Stationary,21,Permanent
+Table,Stationary,22,Permanent
+Football,Sports,31,Permanent
+Cricket Bat,Sports,32,Permanent
+Paper,Stationary,41,Consumable
+Ink Cartridge,IT consumable,42,Consumable
+Files,Stationary,43,Consumable
