@@ -1,1 +1,13 @@
 Item,Department,Qty
+Paper,IT,500
+Ink Cartridge,IT,20
+Files,Accounts,300
+Paper,Administration,400
+Ink Cartridge,Operations,15
+Files,Training,200
+Paper,Medical,250
+Ink Cartridge,Engineering,10
+Files,Security,150
+Paper,Logistics,350
+
+
