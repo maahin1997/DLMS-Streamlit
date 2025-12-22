@@ -1,11 +1,33 @@
 Item,Ledger,Folio,Department,Qty
-Projector,IT pmt,14,Training,1
-Football,Sports,31,Sports,6
-Printer,IT pmt,12,Operations,1
-Desktop,IT pmt,13,Engineering,2
-Chair,Stationary,21,Administration,10
-Table,Stationary,22,Accounts,5
-Cricket Bat,Sports,32,Sports,4
-Desktop,IT pmt,13,IT,1
 Printer,IT pmt,12,IT,2
+Desktop Computer,IT pmt,13,IT,1
+Laptop,IT pmt,15,Training,2
+Projector,IT pmt,14,Training,1
+Network Switch,IT pmt,16,Operations,2
+UPS,IT pmt,17,Accounts,1
+Office Chair,Stationery,21,Administration,10
+Office Table,Stationery,22,Accounts,5
+Steel Almirah,Stationery,23,Administration,2
+Filing Cabinet,Stationery,24,Administration,3
+White Board,Stationery,25,Training,4
+Air Conditioner,Electrical pmt,26,Medical,1
+Ceiling Fan,Electrical pmt,27,Operations,6
+Water Dispenser,Amenity pmt,28,Administration,2
+Fire Extinguisher,Safety pmt,29,Security,5
+Football,Sports,31,Sports,8
+Cricket Bat,Sports,32,Sports,6
+Volleyball,Sports,33,Sports,5
+Badminton Racket,Sports,34,Sports,10
+Treadmill,Sports pmt,35,Sports,1
+Printer,IT pmt,12,Engineering,1
+Desktop Computer,IT pmt,13,Engineering,2
+Laptop,IT pmt,15,Engineering,1
 Projector,IT pmt,14,Medical,1
+Network Switch,IT pmt,16,IT,2
+UPS,IT pmt,17,Operations,1
+Office Chair,Stationery,21,Training,6
+Office Table,Stationery,22,Logistics,4
+Steel Almirah,Stationery,23,Logistics,1
+White Board,Stationery,25,Logistics,3
+
+
