@@ -1,11 +1,11 @@
 Item,Department,Qty,SurveyRef,Status
 Printer,IT,1,SRV/IT/001,Pending
-Projector,Training,1,SRV/TR/002,Approved
+Laptop,Training,1,SRV/TR/002,Approved
 Office Chair,Administration,2,SRV/AD/003,Pending
 Office Table,Accounts,1,SRV/AC/004,Approved
 Football,Sports,1,SRV/SP/005,Pending
 Cricket Bat,Sports,1,SRV/SP/006,Approved
-Printer,Operations,1,SRV/OP/007,Pending
+Network Switch,Operations,1,SRV/OP/007,Pending
 Desktop Computer,Engineering,1,SRV/EN/008,Approved
 Projector,Medical,1,SRV/MD/009,Pending
-Desktop Computer,IT,1,SRV/IT/010,Approved
+White Board,Logistics,1,SRV/LG/010,Approved
