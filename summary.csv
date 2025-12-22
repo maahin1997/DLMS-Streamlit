@@ -1,13 +1,31 @@
 Item,Department,Qty
-Paper,IT,500
-Ink Cartridge,IT,20
-Files,Accounts,300
-Paper,Administration,400
-Ink Cartridge,Operations,15
-Files,Training,200
-Paper,Medical,250
-Ink Cartridge,Engineering,10
-Files,Security,150
-Paper,Logistics,350
-
-
+A4 Paper,IT,800
+Ink Cartridge,IT,40
+File Folder,Accounts,300
+Stapler,Administration,50
+Pen,Training,500
+Marker Pen,Training,200
+A4 Paper,Administration,600
+Ink Cartridge,Engineering,30
+File Folder,Engineering,250
+Pen,Operations,400
+Stapler,Operations,60
+A4 Paper,Medical,500
+Marker Pen,Medical,150
+File Folder,Medical,200
+Pen,Security,300
+A4 Paper,Logistics,700
+Ink Cartridge,Logistics,20
+Stapler,Logistics,40
+Pen,Sports,350
+Marker Pen,Sports,180
+File Folder,Sports,220
+A4 Paper,Engineering,650
+Ink Cartridge,Accounts,25
+Pen,Accounts,450
+Stapler,Accounts,55
+Marker Pen,Administration,170
+File Folder,Administration,280
+A4 Paper,Training,750
+Ink Cartridge,Training,35
+Pen,Logistics,420
