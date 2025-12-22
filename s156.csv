@@ -1,11 +1,32 @@
 Item,Department,Qty,Status
-Printer,IT,2,Pending
-Desktop,IT,1,Dept Approved
-Projector,Training,1,Approved
-Chair,Administration,10,Pending
-Table,Accounts,5,Dept Approved
-Football,Sports,6,Approved
-Cricket Bat,Sports,4,Pending
-Printer,Operations,1,Approved
-Desktop,Engineering,2,Dept Approved
-Projector,Medical,1,Pending
+Printer,IT,2,Received
+Desktop Computer,IT,1,Received
+Laptop,Training,2,Received
+Projector,Training,1,Received
+Network Switch,Operations,2,Received
+UPS,Accounts,1,Received
+Office Chair,Administration,10,Received
+Office Table,Accounts,5,Received
+Steel Almirah,Administration,2,Received
+Filing Cabinet,Administration,3,Received
+White Board,Training,4,Received
+Air Conditioner,Medical,1,Received
+Ceiling Fan,Operations,6,Received
+Water Dispenser,Administration,2,Received
+Fire Extinguisher,Security,5,Received
+Football,Sports,8,Received
+Cricket Bat,Sports,6,Received
+Volleyball,Sports,5,Received
+Badminton Racket,Sports,10,Received
+Treadmill,Sports,1,Received
+Printer,Engineering,1,Received
+Desktop Computer,Engineering,2,Received
+Laptop,Engineering,1,Received
+Projector,Medical,1,Received
+Network Switch,IT,2,Received
+UPS,Operations,1,Received
+Office Chair,Training,6,Received
+Office Table,Logistics,4,Received
+Steel Almirah,Logistics,1,Received
+White Board,Logistics,3,Received
+
